@@ -11,3 +11,8 @@ cp .env.example .env
 docker compose up --build
 ```
 Health check: `http://localhost:8080/actuator/health`
+
+## API Documentation
+- Swagger UI: `http://localhost:8080/swagger-ui.html` (OpenAPI JSON at `/v3/api-docs`).
+- Swagger UI is **public** (permitted in `SecurityConfig`), but every `/api/**` call still needs a JWT. Use **Authorize** and paste the token from `POST /api/auth/login`.
+- Postman collection and environment: [`docs/postman/`](docs/postman/README.md).
