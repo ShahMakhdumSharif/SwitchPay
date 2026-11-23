@@ -34,7 +34,6 @@ public class SwitchPayApplication {
         System.out.println("  SwitchPay is running!");
         System.out.println("  Website / UI (Spring Boot) : http://localhost:" + port + "/");
         System.out.println("  Website / UI (Vite Dev)    : http://localhost:5173/");
-        System.out.println("  Swagger API Docs           : http://localhost:" + port + "/swagger-ui.html");
         System.out.println("  Health Check               : http://localhost:" + port + "/actuator/health");
         System.out.println("============================================================\n");
     }
