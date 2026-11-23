@@ -1,0 +1,62 @@
+name: ci-cd
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: switchpay_test
+          POSTGRES_USER: switchpay
+          POSTGRES_PASSWORD: switchpay
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U switchpay" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/switchpay_test
+      SPRING_DATASOURCE_USERNAME: switchpay
+      SPRING_DATASOURCE_PASSWORD: switchpay
+      JWT_SECRET: ${{ secrets.JWT_SECRET || 'switchpay-ci-jwt-secret-key-at-least-32-characters' }}
+      ADMIN_EMAIL: admin@ci.local
+      ADMIN_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - run: mvn -B verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports
+          path: target/surefire-reports
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cp .env.example .env
+      - run: docker compose up -d --build
+      - run: curl --retry 20 --retry-delay 5 --retry-connrefused --retry-all-errors -fsS http://localhost:8080/actuator/health
+      - run: docker compose down -v
+        if: always()
+
+  deploy:
+    needs: [build-and-test, docker-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.LIVE_URL != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: curl -fsS "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+      - name: Smoke test live URL
+        run: curl --retry 15 --retry-delay 20 --retry-all-errors -fsS "${{ vars.LIVE_URL }}/actuator/health"

@@ -1,0 +1,21 @@
+# default owner = project lead
+* @ShahMakhdumSharif
+/src/main/java/com/switchpay/banking/ @MehrabSakal
+/src/main/java/com/switchpay/ledger/ @MehrabSakal
+/src/main/java/com/switchpay/adjustment/ @MehrabSakal
+/Dockerfile @MehrabSakal
+/docker-compose.yml @MehrabSakal
+/.dockerignore @MehrabSakal
+/src/main/java/com/switchpay/channel/ @rahi-sadat
+/src/main/java/com/switchpay/gateway/ @rahi-sadat
+/src/main/java/com/switchpay/monitoring/ @rahi-sadat
+/monitoring/ @rahi-sadat
+# frontend
+/frontend/ @ShahMakhdumSharif
+/frontend/src/shared/ui/ @rahi-sadat
+/frontend/src/features/seller/ @rahi-sadat
+/frontend/src/features/admin/ops/ @rahi-sadat
+/frontend/src/features/admin/channels/ @rahi-sadat
+/frontend/src/features/admin/ledger/ @MehrabSakal
+/frontend/src/features/admin/adjustments/ @MehrabSakal
+/frontend/src/features/admin/accounts/ @MehrabSakal
