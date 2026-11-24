@@ -1,0 +1,45 @@
+flowchart LR
+    subgraph Clients["Client Channels (React SPA + REST)"]
+        ATM["ATM Simulator (/atm)"]
+        MOB["Mobile Transfer (/transfer)"]
+        WEB["Web Checkout (/pay/:token)"]
+        DASH["Admin / Seller / Buyer UI"]
+    end
+
+    subgraph F1["F1: Channel Module (com.switchpay.channel)"]
+        ACF["ChannelAdapterFactory (Factory)"]
+        ADP["Atm / Mobile / WebChannelAdapter (Adapter)"]
+    end
+
+    subgraph F2_F5["F2 & F5: Switch & Routing (com.switchpay.switching)"]
+        SW["SwitchFacade (Facade / SwitchPort)"]
+        COR["Authorization Chain: AccountActiveRule -> TransactionLimitRule -> SufficientBalanceRule"]
+        RTR["TransactionRouter (Strategy + Registry)"]
+    end
+
+    subgraph Handlers["Domain Transaction Handlers"]
+        BTH["F3: BankingTransactionHandler (com.switchpay.banking)"]
+        PTH["F4: PaymentTransactionHandler & CheckoutSessionState (com.switchpay.gateway)"]
+    end
+
+    subgraph Observers["Synchronous Event Listeners (TransactionCompletedEvent)"]
+        LPL["F6: LedgerPostingListener (com.switchpay.ledger)"]
+        SQL["F4: SettlementQueueListener (com.switchpay.gateway)"]
+        MTL["F9: MetricsListener (com.switchpay.monitoring)"]
+    end
+
+    subgraph Adjustments["F7: Refunds & Reversals (com.switchpay.adjustment)"]
+        AAP["AbstractAdjustmentProcessor (Template Method: RefundProcessor / ReversalProcessor)"]
+    end
+
+    subgraph F8["F8: Security & Audit (com.switchpay.security)"]
+        SEC["JwtAuthFilter + @PreAuthorize + AuditService (AuditPort)"]
+    end
+
+    ATM & MOB & WEB --> ACF --> ADP
+    ADP -->|SwitchPort.submit| SW
+    SW --> COR --> RTR
+    RTR -->|TransactionHandler| BTH & PTH
+    SW -->|TransactionCompletedEvent| LPL & SQL & MTL
+    AAP -->|LedgerPort / SettlementPort / TransactionQueryPort| LPL & SQL & SW
+    SEC -.->|Cuts across all controllers & ports| F1 & F2_F5 & Handlers & Adjustments
