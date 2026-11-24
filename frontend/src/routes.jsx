@@ -8,6 +8,9 @@ import NotFound from "./shared/layout/NotFound.jsx";
 import LoginPage from "./features/auth/LoginPage.jsx";
 import RegisterPage from "./features/auth/RegisterPage.jsx";
 import DashboardPage from "./features/dashboard/DashboardPage.jsx";
+import BuyerAccountsPage from "./features/buyer/accounts/BuyerAccountsPage.jsx";
+import BuyerTransactionsPage from "./features/buyer/transactions/BuyerTransactionsPage.jsx";
+import TransactionDetailPage from "./features/buyer/transactions/TransactionDetailPage.jsx";
 
 function PlaceholderScreen({ title, description }) {
   return (
@@ -39,10 +42,7 @@ export default function AppRoutes() {
           path="accounts"
           element={
             <ProtectedRoute roles={[ROLES.BUYER]}>
-              <PlaceholderScreen
-                title="My Accounts & Balance Inquiry"
-                description="Buyer account list and balance inquiry view."
-              />
+              <BuyerAccountsPage />
             </ProtectedRoute>
           }
         />
@@ -83,10 +83,7 @@ export default function AppRoutes() {
           path="transactions"
           element={
             <ProtectedRoute roles={[ROLES.BUYER, ROLES.ADMIN]}>
-              <PlaceholderScreen
-                title="Transactions"
-                description="Paged transaction history and status filters."
-              />
+              <BuyerTransactionsPage />
             </ProtectedRoute>
           }
         />
@@ -94,10 +91,7 @@ export default function AppRoutes() {
           path="transactions/:ref"
           element={
             <ProtectedRoute roles={[ROLES.BUYER, ROLES.SELLER, ROLES.ADMIN]}>
-              <PlaceholderScreen
-                title="Transaction Detail"
-                description="Transaction status tracking across the lifecycle."
-              />
+              <TransactionDetailPage />
             </ProtectedRoute>
           }
         />
