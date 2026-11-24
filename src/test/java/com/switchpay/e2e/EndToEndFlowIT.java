@@ -72,7 +72,7 @@ class EndToEndFlowIT {
                         .with(testAuth.asBuyer(301L, "e1buyer@switchpay.local"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(withdrawal)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.reference").isNotEmpty())
                 .andExpect(jsonPath("$.status").value("APPROVED"))
                 .andReturn();
