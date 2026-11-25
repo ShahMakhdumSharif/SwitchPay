@@ -9,6 +9,9 @@ import LoginPage from "./features/auth/LoginPage.jsx";
 import RegisterPage from "./features/auth/RegisterPage.jsx";
 import DashboardPage from "./features/dashboard/DashboardPage.jsx";
 import BuyerAccountsPage from "./features/buyer/accounts/BuyerAccountsPage.jsx";
+import AtmPage from "./features/buyer/atm/AtmPage.jsx";
+import TransferPage from "./features/buyer/transfer/TransferPage.jsx";
+import CheckoutPayPage from "./features/buyer/checkout-pay/CheckoutPayPage.jsx";
 import BuyerTransactionsPage from "./features/buyer/transactions/BuyerTransactionsPage.jsx";
 import TransactionDetailPage from "./features/buyer/transactions/TransactionDetailPage.jsx";
 
@@ -50,10 +53,7 @@ export default function AppRoutes() {
           path="atm"
           element={
             <ProtectedRoute roles={[ROLES.BUYER]}>
-              <PlaceholderScreen
-                title="ATM Terminal Simulator"
-                description="Cash withdrawal, balance inquiry, and account validation via ATM channel."
-              />
+              <AtmPage />
             </ProtectedRoute>
           }
         />
@@ -61,10 +61,7 @@ export default function AppRoutes() {
           path="transfer"
           element={
             <ProtectedRoute roles={[ROLES.BUYER]}>
-              <PlaceholderScreen
-                title="Mobile Banking Transfer"
-                description="Fund transfer and balance inquiry via Mobile channel."
-              />
+              <TransferPage />
             </ProtectedRoute>
           }
         />
@@ -72,10 +69,7 @@ export default function AppRoutes() {
           path="pay/:token"
           element={
             <ProtectedRoute roles={[ROLES.BUYER]}>
-              <PlaceholderScreen
-                title="Merchant Checkout Payment"
-                description="Pay a merchant checkout session via Web channel."
-              />
+              <CheckoutPayPage />
             </ProtectedRoute>
           }
         />
