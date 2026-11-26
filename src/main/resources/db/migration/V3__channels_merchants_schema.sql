@@ -32,3 +32,12 @@ CREATE TABLE checkout_sessions (
 );
 
 CREATE INDEX idx_checkout_sessions_merchant_id ON checkout_sessions(merchant_id);
+
+-- default channels (C7). V7 also seeds them, but databases that ran V7 before
+-- this table existed skipped that step, so we add them here too.
+INSERT INTO channels (code, type, name, location, status)
+VALUES
+    ('ATM', 'ATM', 'Default ATM Terminal', 'Dhaka Central Branch', 'ACTIVE'),
+    ('MOBILE', 'MOBILE', 'SwitchPay Mobile Banking App', 'Bangladesh Nationwide', 'ACTIVE'),
+    ('WEB', 'WEB', 'SwitchPay Web Checkout Gateway', 'Online E-Commerce', 'ACTIVE')
+ON CONFLICT (code) DO NOTHING;
