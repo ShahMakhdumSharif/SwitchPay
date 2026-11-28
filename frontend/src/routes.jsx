@@ -14,6 +14,8 @@ import TransferPage from "./features/buyer/transfer/TransferPage.jsx";
 import CheckoutPayPage from "./features/buyer/checkout-pay/CheckoutPayPage.jsx";
 import BuyerTransactionsPage from "./features/buyer/transactions/BuyerTransactionsPage.jsx";
 import TransactionDetailPage from "./features/buyer/transactions/TransactionDetailPage.jsx";
+import AdminUsersPage from "./features/admin/users/AdminUsersPage.jsx";
+import AdminAuditPage from "./features/admin/audit/AdminAuditPage.jsx";
 
 function PlaceholderScreen({ title, description }) {
   return (
@@ -196,10 +198,7 @@ export default function AppRoutes() {
           path="admin/users"
           element={
             <ProtectedRoute roles={[ROLES.ADMIN]}>
-              <PlaceholderScreen
-                title="User Management"
-                description="List users, manage roles, and deactivate accounts."
-              />
+              <AdminUsersPage />
             </ProtectedRoute>
           }
         />
@@ -207,10 +206,7 @@ export default function AppRoutes() {
           path="admin/audit"
           element={
             <ProtectedRoute roles={[ROLES.ADMIN]}>
-              <PlaceholderScreen
-                title="Audit Logs"
-                description="Inspect security and transaction decision audit logs."
-              />
+              <AdminAuditPage />
             </ProtectedRoute>
           }
         />
